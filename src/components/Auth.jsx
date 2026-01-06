@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { supabase } from '../lib/supabase'
+import './Auth.css'
 
 export default function Auth() {
   const [loading, setLoading] = useState(false)
@@ -38,14 +39,7 @@ export default function Auth() {
   }
 
   return (
-    <div style={{
-      maxWidth: '400px',
-      margin: '100px auto',
-      padding: '40px',
-      border: '1px solid #ddd',
-      borderRadius: '8px',
-      backgroundColor: '#fff'
-    }}>
+    <div className="auth-container">
       <h1 style={{ textAlign: 'center', marginBottom: '30px', color: '#333' }}>
         💪 Protein Tracker
       </h1>
