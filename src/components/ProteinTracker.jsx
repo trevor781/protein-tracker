@@ -94,7 +94,7 @@ export default function ProteinTracker({ user }) {
       setEntries([data, ...entries])
       setFoodName('')
       setProteinGrams('')
-      setSuggestion(null) // Clear suggestion after adding food
+      setSuggestion(null)
     } catch (error) {
       console.error('Error adding food:', error)
       alert('Error adding food: ' + error.message)
@@ -138,98 +138,60 @@ export default function ProteinTracker({ user }) {
   }
 
   if (loading) {
-    return <div style={{ textAlign: 'center', padding: '50px' }}>Loading...</div>
+    return <div className="tracker-page">Loading...</div>
   }
 
   return (
-    <div className="tracker-container">
+    <div className="tracker-page">
       {/* Header */}
-      <div className="tracker-header">
-        <h1>💪 Protein Tracker</h1>
-        <div className="user-info">
-          <div className="user-email">
-            {user.email}
-          </div>
-          <button onClick={handleSignOut} style={{
-            padding: '6px 12px',
-            fontSize: '14px',
-            backgroundColor: '#f44336',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}>
+      <header className="tracker-header">
+        <h1 className="tracker-title">💪 Protein Tracker</h1>
+        <div className="tracker-user-section">
+          <div className="tracker-user-email">{user.email}</div>
+          <button onClick={handleSignOut} className="tracker-signout-btn">
             Sign Out
           </button>
         </div>
-      </div>
+      </header>
 
       {/* Progress Section */}
-      <div style={{
-        backgroundColor: '#f5f5f5',
-        padding: '20px',
-        borderRadius: '8px',
-        marginBottom: '30px'
-      }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-          <span style={{ fontSize: '18px', fontWeight: '600' }}>
-            Today's Progress
-          </span>
-          <span style={{ fontSize: '18px', fontWeight: '600' }}>
+      <section className="tracker-progress">
+        <div className="tracker-progress-header">
+          <span className="tracker-progress-title">Today's Progress</span>
+          <span className="tracker-progress-numbers">
             {totalProtein.toFixed(1)}g / {goalProtein}g
           </span>
         </div>
 
-        {/* Progress Bar */}
-        <div style={{
-          width: '100%',
-          height: '30px',
-          backgroundColor: '#ddd',
-          borderRadius: '15px',
-          overflow: 'hidden',
-          marginBottom: '10px'
-        }}>
-          <div style={{
-            width: `${progressPercentage}%`,
-            height: '100%',
-            backgroundColor: progressPercentage >= 100 ? '#4CAF50' : '#2196F3',
-            transition: 'width 0.3s ease'
-          }}></div>
+        <div className="tracker-progress-bar-container">
+          <div
+            className={`tracker-progress-bar-fill ${progressPercentage >= 100 ? 'complete' : ''}`}
+            style={{ width: `${progressPercentage}%` }}
+          ></div>
         </div>
 
-        <div style={{ fontSize: '14px', color: '#666' }}>
+        <div className={`tracker-progress-text ${remaining <= 0 ? 'complete' : ''}`}>
           {remaining > 0 ? (
             <>You need <strong>{remaining.toFixed(1)}g more</strong> protein today</>
           ) : (
-            <span style={{ color: '#4CAF50', fontWeight: '600' }}>✅ Goal reached!</span>
+            <span>✅ Goal reached!</span>
           )}
         </div>
-      </div>
+      </section>
 
       {/* Add Food Form */}
-      <div style={{
-        backgroundColor: '#fff',
-        border: '1px solid #ddd',
-        borderRadius: '8px',
-        padding: '20px',
-        marginBottom: '20px'
-      }}>
-        <h2 style={{ marginTop: 0, marginBottom: '20px' }}>Add Food</h2>
+      <section className="tracker-add-food">
+        <h2 className="tracker-add-food-title">Add Food</h2>
 
-        <form onSubmit={handleAddFood}>
-          <div className="food-form-grid">
+        <form onSubmit={handleAddFood} className="tracker-add-food-form">
+          <div className="tracker-add-food-grid">
             <input
               type="text"
               placeholder="Food name (e.g., Chicken breast)"
               value={foodName}
               onChange={(e) => setFoodName(e.target.value)}
               required
-              style={{
-                padding: '10px',
-                fontSize: '16px',
-                border: '1px solid #ddd',
-                borderRadius: '4px'
-              }}
+              className="tracker-input"
             />
 
             <input
@@ -239,23 +201,13 @@ export default function ProteinTracker({ user }) {
               value={proteinGrams}
               onChange={(e) => setProteinGrams(e.target.value)}
               required
-              style={{
-                padding: '10px',
-                fontSize: '16px',
-                border: '1px solid #ddd',
-                borderRadius: '4px'
-              }}
+              className="tracker-input"
             />
 
             <select
               value={mealTime}
               onChange={(e) => setMealTime(e.target.value)}
-              style={{
-                padding: '10px',
-                fontSize: '16px',
-                border: '1px solid #ddd',
-                borderRadius: '4px'
-              }}
+              className="tracker-input"
             >
               <option value="breakfast">Breakfast</option>
               <option value="lunch">Lunch</option>
@@ -268,99 +220,47 @@ export default function ProteinTracker({ user }) {
           <button
             type="submit"
             disabled={submitting}
-            style={{
-              padding: '12px 24px',
-              fontSize: '16px',
-              fontWeight: '600',
-              backgroundColor: submitting ? '#999' : '#4CAF50',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: submitting ? 'not-allowed' : 'pointer'
-            }}
+            className="tracker-submit-btn"
           >
             {submitting ? 'Adding...' : 'Add Food'}
           </button>
         </form>
-      </div>
+      </section>
 
       {/* AI Suggestion Section */}
-      <div style={{
-        backgroundColor: '#fff3cd',
-        border: '1px solid #ffc107',
-        borderRadius: '8px',
-        padding: '20px',
-        marginBottom: '20px'
-      }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-          <h3 style={{ margin: 0 }}>🤖 Need a meal idea?</h3>
+      <section className="tracker-ai-section">
+        <div className="tracker-ai-header">
+          <h3 className="tracker-ai-title">🤖 Need a meal idea?</h3>
           <button
             onClick={handleGetSuggestion}
             disabled={loadingSuggestion}
-            style={{
-              padding: '10px 20px',
-              fontSize: '14px',
-              fontWeight: '600',
-              backgroundColor: loadingSuggestion ? '#999' : '#ffc107',
-              color: '#000',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: loadingSuggestion ? 'not-allowed' : 'pointer'
-            }}
+            className="tracker-ai-btn"
           >
             {loadingSuggestion ? 'Thinking...' : 'Get Suggestion'}
           </button>
         </div>
 
         {suggestion && (
-          <div style={{
-            marginTop: '15px',
-            padding: '15px',
-            backgroundColor: '#fff',
-            borderRadius: '4px',
-            whiteSpace: 'pre-wrap'
-          }}>
-            {suggestion}
-          </div>
+          <div className="tracker-ai-result">{suggestion}</div>
         )}
-      </div>
+      </section>
 
       {/* Today's Entries */}
-      <div>
-        <h2 style={{ marginBottom: '15px' }}>Today's Entries ({entries.length})</h2>
+      <section className="tracker-entries-section">
+        <h2 className="tracker-entries-title">Today's Entries ({entries.length})</h2>
 
         {entries.length === 0 ? (
-          <div style={{
-            textAlign: 'center',
-            padding: '40px',
-            color: '#999',
-            backgroundColor: '#f9f9f9',
-            borderRadius: '8px'
-          }}>
+          <div className="tracker-entries-empty">
             No entries yet. Add your first meal above!
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <div className="tracker-entries-list">
             {entries.map(entry => (
-              <div
-                key={entry.id}
-                className="entry-card"
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  padding: '15px',
-                  backgroundColor: '#fff',
-                  border: '1px solid #ddd',
-                  borderRadius: '8px'
-                }}
-              >
-                <div>
-                  <div style={{ fontSize: '16px', fontWeight: '500', marginBottom: '5px' }}>
-                    {entry.food_name}
-                  </div>
-                  <div style={{ fontSize: '14px', color: '#666' }}>
-                    <span style={{ textTransform: 'capitalize' }}>{entry.meal_time}</span>
+              <article key={entry.id} className="tracker-entry-card">
+                <div className="tracker-entry-info">
+                  <div className="tracker-entry-name">{entry.food_name}</div>
+                  <div className="tracker-entry-meta">
+                    <span className="tracker-entry-meta-meal">{entry.meal_time}</span>
                     {' • '}
                     {new Date(entry.created_at).toLocaleTimeString('en-US', {
                       hour: 'numeric',
@@ -369,30 +269,20 @@ export default function ProteinTracker({ user }) {
                   </div>
                 </div>
 
-                <div className="entry-actions" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                  <span style={{ fontSize: '18px', fontWeight: '600', color: '#4CAF50' }}>
-                    {entry.protein_grams}g
-                  </span>
+                <div className="tracker-entry-actions">
+                  <span className="tracker-entry-protein">{entry.protein_grams}g</span>
                   <button
                     onClick={() => handleDeleteEntry(entry.id)}
-                    style={{
-                      padding: '6px 12px',
-                      fontSize: '14px',
-                      backgroundColor: '#f44336',
-                      color: '#fff',
-                      border: 'none',
-                      borderRadius: '4px',
-                      cursor: 'pointer'
-                    }}
+                    className="tracker-entry-delete-btn"
                   >
                     Delete
                   </button>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
         )}
-      </div>
+      </section>
     </div>
   )
 }

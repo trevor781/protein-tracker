@@ -39,113 +39,63 @@ export default function Auth() {
   }
 
   return (
-    <div className="auth-container">
-      <h1 style={{ textAlign: 'center', marginBottom: '30px', color: '#333' }}>
-        💪 Protein Tracker
-      </h1>
+    <div className="auth-wrapper">
+      <div className="auth-container">
+        <h1 className="auth-title">💪 Protein Tracker</h1>
 
-      <form onSubmit={handleAuth}>
-        <div style={{ marginBottom: '20px' }}>
-          <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
-            Email
-          </label>
-          <input
-            type="email"
-            placeholder="you@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            style={{
-              width: '100%',
-              padding: '10px',
-              fontSize: '16px',
-              border: '1px solid #ddd',
-              borderRadius: '4px',
-              boxSizing: 'border-box'
-            }}
-          />
-        </div>
-
-        <div style={{ marginBottom: '20px' }}>
-          <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
-            Password
-          </label>
-          <input
-            type="password"
-            placeholder="••••••••"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            style={{
-              width: '100%',
-              padding: '10px',
-              fontSize: '16px',
-              border: '1px solid #ddd',
-              borderRadius: '4px',
-              boxSizing: 'border-box'
-            }}
-          />
-        </div>
-
-        {error && (
-          <div style={{
-            padding: '10px',
-            marginBottom: '20px',
-            backgroundColor: '#fee',
-            color: '#c33',
-            borderRadius: '4px',
-            fontSize: '14px'
-          }}>
-            {error}
+        <form onSubmit={handleAuth} className="auth-form">
+          <div className="auth-form-group">
+            <label htmlFor="email" className="auth-label">Email</label>
+            <input
+              id="email"
+              type="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="auth-input"
+            />
           </div>
-        )}
 
-        {message && (
-          <div style={{
-            padding: '10px',
-            marginBottom: '20px',
-            backgroundColor: '#efe',
-            color: '#3c3',
-            borderRadius: '4px',
-            fontSize: '14px'
-          }}>
-            {message}
+          <div className="auth-form-group">
+            <label htmlFor="password" className="auth-label">Password</label>
+            <input
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="auth-input"
+            />
           </div>
-        )}
 
-        <button
-          type="submit"
-          disabled={loading}
-          style={{
-            width: '100%',
-            padding: '12px',
-            fontSize: '16px',
-            fontWeight: '600',
-            color: '#fff',
-            backgroundColor: loading ? '#999' : '#4CAF50',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: loading ? 'not-allowed' : 'pointer'
-          }}
-        >
-          {loading ? 'Loading...' : (isSignUp ? 'Sign Up' : 'Sign In')}
-        </button>
-      </form>
+          {error && (
+            <div className="auth-error">{error}</div>
+          )}
 
-      <div style={{ textAlign: 'center', marginTop: '20px' }}>
-        <button
-          onClick={() => setIsSignUp(!isSignUp)}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: '#4CAF50',
-            cursor: 'pointer',
-            textDecoration: 'underline',
-            fontSize: '14px'
-          }}
-        >
-          {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
-        </button>
+          {message && (
+            <div className="auth-message">{message}</div>
+          )}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="auth-submit"
+          >
+            {loading ? 'Loading...' : (isSignUp ? 'Sign Up' : 'Sign In')}
+          </button>
+        </form>
+
+        <div className="auth-toggle">
+          <button
+            type="button"
+            onClick={() => setIsSignUp(!isSignUp)}
+            className="auth-toggle-btn"
+          >
+            {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
+          </button>
+        </div>
       </div>
     </div>
   )
