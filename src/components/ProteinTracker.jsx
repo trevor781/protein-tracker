@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 import { getAISuggestion } from '../services/ai'
+import './ProteinTracker.css'
 
 export default function ProteinTracker({ user }) {
   const [todayLog, setTodayLog] = useState(null)
@@ -141,12 +142,12 @@ export default function ProteinTracker({ user }) {
   }
 
   return (
-    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
+    <div className="tracker-container">
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-        <h1 style={{ margin: 0 }}>💪 Protein Tracker</h1>
-        <div style={{ textAlign: 'right' }}>
-          <div style={{ fontSize: '14px', color: '#666', marginBottom: '5px' }}>
+      <div className="tracker-header">
+        <h1>💪 Protein Tracker</h1>
+        <div className="user-info">
+          <div className="user-email">
             {user.email}
           </div>
           <button onClick={handleSignOut} style={{
@@ -216,7 +217,7 @@ export default function ProteinTracker({ user }) {
         <h2 style={{ marginTop: 0, marginBottom: '20px' }}>Add Food</h2>
 
         <form onSubmit={handleAddFood}>
-          <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: '10px', marginBottom: '15px' }}>
+          <div className="food-form-grid">
             <input
               type="text"
               placeholder="Food name (e.g., Chicken breast)"
@@ -343,6 +344,7 @@ export default function ProteinTracker({ user }) {
             {entries.map(entry => (
               <div
                 key={entry.id}
+                className="entry-card"
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
@@ -367,7 +369,7 @@ export default function ProteinTracker({ user }) {
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                <div className="entry-actions" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                   <span style={{ fontSize: '18px', fontWeight: '600', color: '#4CAF50' }}>
                     {entry.protein_grams}g
                   </span>

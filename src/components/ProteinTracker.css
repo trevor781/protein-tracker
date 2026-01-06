@@ -1,0 +1,102 @@
+/* Mobile-responsive styles for Protein Tracker */
+
+.tracker-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.tracker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  gap: 15px;
+}
+
+.tracker-header h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.user-info {
+  text-align: right;
+}
+
+.user-email {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.food-form-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .tracker-container {
+    padding: 15px;
+  }
+
+  .tracker-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .tracker-header h1 {
+    font-size: 24px;
+  }
+
+  .user-info {
+    width: 100%;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .user-email {
+    margin-bottom: 0;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .food-form-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .entry-card {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 10px;
+  }
+
+  .entry-actions {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .tracker-container {
+    padding: 10px;
+  }
+
+  .tracker-header h1 {
+    font-size: 20px;
+  }
+
+  .user-email {
+    font-size: 12px;
+  }
+}
