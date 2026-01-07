@@ -30,7 +30,8 @@ export default function ProteinTracker({ user }) {
   async function loadTodayData() {
     try {
       setLoading(true)
-      const today = new Date().toISOString().split('T')[0]
+      // Get today's date in user's local timezone (not UTC)
+      const today = new Date().toLocaleDateString('en-CA') // Returns YYYY-MM-DD format
 
       // Get or create today's log using upsert to handle race conditions
       const { data: log, error: upsertError } = await supabase
@@ -54,15 +55,35 @@ export default function ProteinTracker({ user }) {
       setTodayLog(log)
       setGoalProtein(log.goal_protein)
 
-      // Load today's entries
+      // Load today's entries based on when they were actually created (in user's timezone)
+      // This fixes the issue where entries were saved with wrong date due to UTC confusion
+      const startOfDay = new Date()
+      startOfDay.setHours(0, 0, 0, 0)
+      const endOfDay = new Date()
+      endOfDay.setHours(23, 59, 59, 999)
+
       const { data: entriesData, error: entriesError } = await supabase
         .from('food_entries')
         .select('*')
-        .eq('daily_log_id', log.id)
+        .eq('user_id', user.id)
+        .gte('created_at', startOfDay.toISOString())
+        .lte('created_at', endOfDay.toISOString())
         .order('created_at', { ascending: false })
 
       if (entriesError) throw entriesError
       setEntries(entriesData || [])
+
+      // Fix any entries that are linked to wrong daily_log (due to old UTC bug)
+      // Update them to point to today's correct log
+      if (entriesData && entriesData.length > 0) {
+        const entriesToFix = entriesData.filter(e => e.daily_log_id !== log.id)
+        if (entriesToFix.length > 0) {
+          await supabase
+            .from('food_entries')
+            .update({ daily_log_id: log.id })
+            .in('id', entriesToFix.map(e => e.id))
+        }
+      }
     } catch (error) {
       console.error('Error loading data:', error)
       alert('Error loading your data: ' + error.message)
